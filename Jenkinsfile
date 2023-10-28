@@ -42,7 +42,7 @@ pipeline {
                     --file ./DynamicInstrumentation/Dockerfile . \
                     --label org.opencontainers.image.revision=\"\$(git rev-parse HEAD)\" \
                     --label org.opencontainers.image.source=github.com/scotcurry/DynamicInstrumentation \
-                    --build-arg=\"\"PASSED_DD_VERSION=${current_version}\"\""
+                    --build-arg passed_dd_version=${current_version}"
                 }
             }
         }
