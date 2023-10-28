@@ -2,6 +2,10 @@
 
 Microsoft has deprecated Visual Studio for Mac so there is an entirely new way that projects need to be created for Visual Studio Code.  It is [well documented here](https://learn.microsoft.com/en-us/aspnet/core/tutorials/first-web-api?view=aspnetcore-7.0&tabs=visual-studio-code).  This is all run from the DynamicInstrumentation folder.  It will build a project folder and a .sln file in the same folder as it is run.
 
+## Code Overview
+
+All this does is make a call to the Datadog console to pull organization information.  Example should show how this information can be used to create spans, log entries, and metrics based on the returned values.
+
 ### Creating the solution and project
 To create the solution and the associated project use the following:
 ```

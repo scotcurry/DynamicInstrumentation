@@ -35,12 +35,14 @@ pipeline {
             }
         }
         stage ('Build Docker Container') {
-            // when {
-            //     equals expected: 'git-sha, actual: git_sha
-            // }
+            // If ever copying this code, make sure to get the quoting and escaping correct
             steps {
                 script {
-                    sh '/usr/local/bin/docker build --tag docker.io/scotcurry4/datadogcurrywaredelete:3.1014.686 --file ./Dockerfile .'
+                    sh "/usr/local/bin/docker build --tag docker.io/scotcurry4/dynamicinstrumentation:${current_version} \
+                    --file ./DynamicInstrumentation/Dockerfile . \
+                    --label org.opencontainers.image.revision=\"\$(git rev-parse HEAD)\" \
+                    --label org.opencontainers.image.source=github.com/scotcurry/DynamicInstrumentation \
+                    --build-arg=\"DD_VERSION=${current_version}\""
                 }
             }
         }
