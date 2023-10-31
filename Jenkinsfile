@@ -42,16 +42,17 @@ pipeline {
                     --file ./DynamicInstrumentation/Dockerfile . \
                     --label org.opencontainers.image.revision=\"\$(git rev-parse HEAD)\" \
                     --label org.opencontainers.image.source=github.com/scotcurry/DynamicInstrumentation \
-                    --build-arg passed_dd_version=${current_version}"
+                    --platform linux/amd64 \
+                    --build-arg PASSED_DD_VERSION=${current_version}"
                 }
             }
         }
-        // stage ('Build / Update Datadog Service Catalog') {
-        //     steps {
-        //         sh '/opt/homebrew/bin/terraform init'
-        //         sh '/opt/homebrew/bin/terraform plan -var datadog_app_key=${DATADOG_APP_KEY} -var datadog_api_key=${DATADOG_API_KEY}'
-        //         sh '/opt/homebrew/bin/terraform apply -var datadog_app_key=${DATADOG_APP_KEY} -var datadog_api_key=${DATADOG_API_KEY} -auto-approve'
-        //     }
-        // }
+        stage ('Build / Update Datadog Service Catalog') {
+            steps {
+                sh '/opt/homebrew/bin/terraform init'
+                sh '/opt/homebrew/bin/terraform plan -var datadog_app_key=${DATADOG_APP_KEY} -var datadog_api_key=${DATADOG_API_KEY}'
+                sh '/opt/homebrew/bin/terraform apply -var datadog_app_key=${DATADOG_APP_KEY} -var datadog_api_key=${DATADOG_API_KEY} -auto-approve'
+            }
+        }
     }
 }

@@ -1,0 +1,14 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: dynamicinstrumentation-service
+spec:
+  type: LoadBalancer
+  selector:
+    app: dynamicinstrumentation
+  ports:
+    - name: "http"
+      protocol: "TCP"
+      port: 8090
+      targetPort: 80
+      nodePort: 30010
