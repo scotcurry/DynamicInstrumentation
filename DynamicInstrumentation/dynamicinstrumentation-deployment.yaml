@@ -1,12 +1,12 @@
 apiVersion: "apps/v1"
 kind: "Deployment"
 metadata:
-  name: dynamicinstrumentation-deployment
+  name: "dynamicinstrumentation"
   labels:
     app: "dynamicinstrumentation"
     tags.datadoghq.com/env: "prod"
     tags.datadoghq.com/service: "dynamicinstrumentation"
-    tags.datadoghq.com/version: <DATADOG_VERSION>
+    tags.datadoghq.com/version: "3.1030"
 spec:
   replicas: 1
   selector:
@@ -14,22 +14,21 @@ spec:
       app: "dynamicinstrumentation"
       tags.datadoghq.com/env: "prod"
       tags.datadoghq.com/service: "dynamicinstrumentation"
-      tags.datadoghq.com/version: <DATADOG_VERSION>
+      tags.datadoghq.com/version: "3.1030"
   template:
     metadata:
-    name: dynamicinstrumentation-deployment
-    labels:
-      app: "dynamicinstrumentation"
-      tags.datadoghq.com/env: "prod"
-      tags.datadoghq.com/service: "dynamicinstrumentation"
-      tags.datadoghq.com/version: <DATADOG_VERSION>
-      admission.datadoghq.com/enabled: "true"
-    annotations:
-      admission.datadoghq.com/dotnet-lib.version: v2.40.0
+      labels:
+        app: "dynamicinstrumentation"
+        tags.datadoghq.com/env: "prod"
+        tags.datadoghq.com/service: "dynamicinstrumentation"
+        tags.datadoghq.com/version: "3.1030"
+        admission.datadoghq.com/enabled: "true"
+      annotations:
+        admission.datadoghq.com/dotnet-lib.version: "v2.40.0"
     spec:
       containers:
         - name: "dynamicinstrumentation"
-          image: scotcurry4/dynamicinstrumentation:<DATADOG_VERSION>
+          image: "scotcurry4/dynamicinstrumentation:3.1030"
           ports:
             - containerPort: 80
           env:
