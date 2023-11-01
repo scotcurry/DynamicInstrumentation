@@ -2,7 +2,7 @@
 # docker build statement.
 ARG PASSED_DD_VERSION=1.0.0
 # Base image is the dotnet SDK
-FROM mcr.microsoft.com/dotnet/sdk:7.0 AS build-env
+FROM mcr.microsoft.com/dotnet/sdk:7.0.403 AS build-env
 # Sets the working directory inside of the container.  If the folder doesn't exist it get created.
 WORKDIR /App
 

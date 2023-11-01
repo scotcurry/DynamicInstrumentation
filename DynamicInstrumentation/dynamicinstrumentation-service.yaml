@@ -3,7 +3,7 @@ kind: Service
 metadata:
   name: dynamicinstrumentation-service
 spec:
-  type: LoadBalancer
+  type: ClusterIP
   selector:
     app: dynamicinstrumentation
   ports:
@@ -11,4 +11,3 @@ spec:
       protocol: "TCP"
       port: 8090
       targetPort: 80
-      nodePort: 30010
