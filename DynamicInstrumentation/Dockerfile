@@ -2,7 +2,7 @@
 # docker build statement.
 ARG PASSED_DD_VERSION=1.0.0
 # Base image is the dotnet SDK
-FROM mcr.microsoft.com/dotnet/sdk:7.0.403 AS build-env
+FROM mcr.microsoft.com/dotnet/sdk:7.0 AS build-env
 # Sets the working directory inside of the container.  If the folder doesn't exist it get created.
 WORKDIR /App
 
@@ -15,7 +15,7 @@ RUN dotnet restore
 RUN dotnet publish -c Release -o out
 
 # Not exactly sure why this image isn't used from the start, but this adds the ASP.NET layer to the container.
-FROM mcr.microsoft.com/dotnet/aspnet:7.0.13
+FROM mcr.microsoft.com/dotnet/aspnet:7.0
 # Need set the working directory on this image to /App as well.
 WORKDIR /App
 

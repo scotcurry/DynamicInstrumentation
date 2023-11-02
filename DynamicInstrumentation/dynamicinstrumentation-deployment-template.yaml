@@ -1,0 +1,35 @@
+apiVersion: "apps/v1"
+kind: "Deployment"
+metadata:
+  name: "dynamicinstrumentation"
+  labels:
+    app: "dynamicinstrumentation"
+    tags.datadoghq.com/env: "prod"
+    tags.datadoghq.com/service: "dynamicinstrumentation"
+    tags.datadoghq.com/version: "<DATADOG_VERSION>"
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: "dynamicinstrumentation"
+      tags.datadoghq.com/env: "prod"
+      tags.datadoghq.com/service: "dynamicinstrumentation"
+      tags.datadoghq.com/version: "<DATADOG_VERSION>"
+  template:
+    metadata:
+      labels:
+        app: "dynamicinstrumentation"
+        tags.datadoghq.com/env: "prod"
+        tags.datadoghq.com/service: "dynamicinstrumentation"
+        tags.datadoghq.com/version: "<DATADOG_VERSION>"
+        admission.datadoghq.com/enabled: "true"
+      annotations:
+        admission.datadoghq.com/dotnet-lib.version: "v2.40.0"
+    spec:
+      containers:
+        - name: "dynamicinstrumentation"
+          image: "scotcurry4/dynamicinstrumentation:<DATADOG_VERSION>"
+          ports:
+            - containerPort: 80
+          env:
+            - name: DD_LOGS_INJECTION

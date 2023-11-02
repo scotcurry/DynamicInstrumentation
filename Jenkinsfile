@@ -47,6 +47,12 @@ pipeline {
                 }
             }
         }
+        stage ('Create Deployment YAML File From Template') {
+            steps {
+                sh 'cp ./DynamicInstrumentation/dynamicinstrumentation-deployment.yaml ./DynamicInstrumentation/deployment.yaml'
+                sh "sed 's/<DATADOG_VERSION>/${current_version}/g' ./DynamicInstrumentation/dynamicinstrumentation-deployment-template.yaml  > ./DynamicInstrumentation/deployment.yaml"
+            }
+        }
         stage ('Build / Update Datadog Service Catalog') {
             steps {
                 sh '/opt/homebrew/bin/terraform init'
