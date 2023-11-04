@@ -1,0 +1,34 @@
+# This information is based on this file https://github.com/DataDog/helm-charts/blob/main/charts/datadog/values.yaml
+targetSystem: "linux"
+datadog:
+    apiKeyExistingSecret: datadog-secret
+    appKeyExistingSecret: datadog-secret
+    # GKE does not accept dots (.), so default to not using them.
+    clusterName: dynamicinstrumentation-cluster
+    loglevel: debug
+    kubelet:
+      tlsVerify:  false
+
+    apm:
+      portEnabled: true
+
+    admissionController:
+      enabled: true
+      mutatedUnlabelled: true
+
+    logs:
+      enabled: true
+      containerCollectAll: true
+
+    processAgent:
+      enabled: true
+      processCollection: true
+      processDiscovery: true
+    networkMonitoring:
+      enabled: true
+    serviceMonitoring:
+      enabled: true
+    remoteConfiguration:
+      enabled: true
+    inventories_configuration_enabled:
+      enabled: true

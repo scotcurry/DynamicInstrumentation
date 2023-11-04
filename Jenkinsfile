@@ -42,15 +42,27 @@ pipeline {
                     --file ./DynamicInstrumentation/Dockerfile . \
                     --label org.opencontainers.image.revision=\"\$(git rev-parse HEAD)\" \
                     --label org.opencontainers.image.source=github.com/scotcurry/DynamicInstrumentation \
-                    --platform linux/amd64 \
                     --build-arg PASSED_DD_VERSION=${current_version}"
+                }
+            }
+        }
+        stage ('Push Docker Image to Docker Hub') {
+            steps {
+                script {
+                    sh "/usr/local/bin/docker push scotcurry4/dynamicinstrumentation:${current_version}"
                 }
             }
         }
         stage ('Create Deployment YAML File From Template') {
             steps {
-                sh 'cp ./DynamicInstrumentation/dynamicinstrumentation-deployment.yaml ./DynamicInstrumentation/deployment.yaml'
+                sh 'cp ./DynamicInstrumentation/dynamicinstrumentation-deployment-template.yaml ./DynamicInstrumentation/deployment.yaml'
                 sh "sed 's/<DATADOG_VERSION>/${current_version}/g' ./DynamicInstrumentation/dynamicinstrumentation-deployment-template.yaml  > ./DynamicInstrumentation/deployment.yaml"
+                sh 'cat ./DynamicInstrumentation/deployment.yaml'
+            }
+        }
+        stage ('Deploy App to Kubernetes') {
+            steps {
+                sh '/Users/scot.curry/google-cloud-sdk/bin/kubectl create -f ./DynamicInstrumentation/deployment.yaml'
             }
         }
         stage ('Build / Update Datadog Service Catalog') {

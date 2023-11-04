@@ -33,3 +33,4 @@ spec:
             - containerPort: 80
           env:
             - name: DD_LOGS_INJECTION
+            
