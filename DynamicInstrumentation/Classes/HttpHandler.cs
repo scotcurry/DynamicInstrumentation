@@ -12,7 +12,6 @@ public class HttpHandler
         var datadogAPIKey = Environment.GetEnvironmentVariable("DD_API_KEY");
         var datadogAPPKey = Environment.GetEnvironmentVariable("DD_APP_KEY");
 
-        datadogAPIKey = null;
         var responseBody = string.Empty;
         if (datadogAPIKey != null && datadogAPPKey != null) {
             var getOrganizationURI = new UriBuilder("https", "api.datadoghq.com", 443, "api/v1/org");

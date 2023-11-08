@@ -1,4 +1,5 @@
 # This information is based on this file https://github.com/DataDog/helm-charts/blob/main/charts/datadog/values.yaml
+# Great documentation on all of the options available https://github.com/DataDog/helm-charts/blob/main/charts/datadog/README.md
 targetSystem: "linux"
 datadog:
     apiKeyExistingSecret: datadog-secret
@@ -32,3 +33,8 @@ datadog:
       enabled: true
     inventories_configuration_enabled:
       enabled: true
+
+clusterAgent:
+  admissionController:
+    enabled: true
+    mutatedUnlabelled: false
