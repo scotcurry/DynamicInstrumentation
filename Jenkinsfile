@@ -24,7 +24,7 @@ pipeline {
                 }
             }
         }
-        stage ('Get Git Version') {
+        stage ('Get Git SHA Value') {
             steps {
                 script {
                     git_sha = sh(script: 'git rev-parse HEAD', returnStdout: true)
@@ -38,11 +38,11 @@ pipeline {
             // If ever copying this code, make sure to get the quoting and escaping correct
             steps {
                 script {
-                    sh "/usr/local/bin/docker build --tag docker.io/scotcurry4/dynamicinstrumentation:${current_version} \
+                    sh ("/usr/local/bin/docker build --tag docker.io/scotcurry4/dynamicinstrumentation:${current_version} \
                     --file ./DynamicInstrumentation/Dockerfile . \
-                    --label org.opencontainers.image.revision=\"\$(git rev-parse HEAD)\" \
-                    --label org.opencontainers.image.source=github.com/scotcurry/DynamicInstrumentation \
-                    --build-arg PASSED_DD_VERSION=${current_version}"
+                    --build_arg DD_VERSION=${current_version} \
+                    --build-arg DD_GIT_REPOSITORY_URL=github.com/scotcurry/DynamicInstrumentation \
+                    --build-arg DD_GIT_COMMIT_SHA=${git_sha}" )
                 }
             }
         }

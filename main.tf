@@ -34,7 +34,7 @@ output "print_app_key" {
 resource "datadog_service_definition_yaml" "service_definition_v2_1" {
   service_definition = <<EOF
 schema-version: v2.2
-dd-service: dynamic_instrumentation
+dd-service: dynamicinstrumentation
 team: e-commerce-team
 contacts:
   - name: Support Email
