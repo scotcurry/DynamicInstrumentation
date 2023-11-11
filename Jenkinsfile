@@ -38,11 +38,9 @@ pipeline {
             // If ever copying this code, make sure to get the quoting and escaping correct
             steps {
                 script {
-                    sh ("/usr/local/bin/docker build --tag docker.io/scotcurry4/dynamicinstrumentation:${current_version} \
+                   sh ("/usr/local/bin/docker build --tag docker.io/scotcurry4/dynamicinstrumentation:${current_version} \
                     --file ./DynamicInstrumentation/Dockerfile . \
-                    --build_arg DD_VERSION=${current_version} \
-                    --build-arg DD_GIT_REPOSITORY_URL=github.com/scotcurry/DynamicInstrumentation \
-                    --build-arg DD_GIT_COMMIT_SHA=${git_sha}" )
+                    --build-arg=DD_VERSION=${current_version}" )
                 }
             }
         }
@@ -55,11 +53,11 @@ pipeline {
         }
         stage ('Create Deployment YAML File From Template') {
             steps {
-                sh 'cp ./DynamicInstrumentation/dynamicinstrumentation-deployment-template.yaml ./DynamicInstrumentation/deployment.yaml'
-                sh "sed 's/<DATADOG_VERSION>/${current_version}/g' ./DynamicInstrumentation/dynamicinstrumentation-deployment-template.yaml  > ./DynamicInstrumentation/deployment-current-version.yaml"
-                sh "sed 's/<GIT_SHA>/${git_sha}/g' ./DynamicInstrumentation/deployment-current-version.yaml ./DynamicInstrumentation/deployment-git-sha.yaml"
-                sh "sed 's/<DD_API_KEY>/${DATADOG_API_KEY}/g' ./DynamicInstrumentation/deployment-git-sha.yaml ./DynamicInstrumentation/deployment-dd-api-key.yaml"
-                sh "sed 's/<DD_APP_KEY>/${DATADOG_APP_KEY}/g' ./DynamicInstrumentation/deployment-dd-api-key.yaml ./DynamicInstrumentation/deployment.yaml"
+                sh 'cp ./DynamicInstrumentation/dynamicinstrumentation-deployment-template.yaml ./DynamicInstrumentation/dynamicinstrumentation-starter.yaml'
+                sh "sed 's/<DATADOG_VERSION>/${current_version}/g' ./DynamicInstrumentation/dynamicinstrumentation-starter.yaml  > ./DynamicInstrumentation/deployment-current-version.yaml"
+                sh "sed 's/<GIT_SHA>/${git_sha}/g' ./DynamicInstrumentation/deployment-current-version.yaml > ./DynamicInstrumentation/deployment-git-sha.yaml"
+                sh "sed 's/<DD_API_KEY>/${DATADOG_API_KEY}/g' ./DynamicInstrumentation/deployment-git-sha.yaml > ./DynamicInstrumentation/deployment-dd-api-key.yaml"
+                sh "sed 's/<DD_APP_KEY>/${DATADOG_APP_KEY}/g' ./DynamicInstrumentation/deployment-dd-api-key.yaml > ./DynamicInstrumentation/deployment.yaml"
                 sh 'cat ./DynamicInstrumentation/deployment.yaml'
             }
         }
