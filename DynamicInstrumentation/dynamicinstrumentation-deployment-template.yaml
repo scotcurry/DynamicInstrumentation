@@ -23,7 +23,6 @@ spec:
         tags.datadoghq.com/service: "dynamicinstrumentation"
         tags.datadoghq.com/version: "<DATADOG_VERSION>"
         tags.datadoghq.com/git.commit.sha: "<GIT_SHA>"
-        tags.datadoghq.com/git.repository_url: "github.com/scotcurry/DynamicInstrumentation"
         admission.datadoghq.com/enabled: "true"
       annotations:
         admission.datadoghq.com/dotnet-lib.version: "v2.40.0"
