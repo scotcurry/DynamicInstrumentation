@@ -22,6 +22,8 @@ spec:
         tags.datadoghq.com/env: "prod"
         tags.datadoghq.com/service: "dynamicinstrumentation"
         tags.datadoghq.com/version: "<DATADOG_VERSION>"
+        tags.datadoghq.com/git.commit.sha: "<GIT_SHA>"
+        tags.datadoghq.com/git.repository_url: "github.com/scotcurry/DynamicInstrumentation"
         admission.datadoghq.com/enabled: "true"
       annotations:
         admission.datadoghq.com/dotnet-lib.version: "v2.40.0"
@@ -33,4 +35,9 @@ spec:
             - containerPort: 80
           env:
             - name: DD_LOGS_INJECTION
+              value: "true"
+            - name: DD_API_KEY
+              value: "<DD_API_KEY>"
+            - name: DD_APP_KEY
+              value: "<DD_APP_KEY>"
             

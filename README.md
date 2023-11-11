@@ -25,4 +25,8 @@
 
 ## Publishing the Application
 
-The service should always be deployed (should put this in the build pipeline).  
+The service should always be deployed (should put this in the build pipeline).  To expose this app use the following command:
+
+```
+minikube service dynamicinstrumentation-service --url
+```
