@@ -34,6 +34,13 @@ pipeline {
                 }
             }
         }
+        stage ('Update Dockerfile Template') {
+            steps {
+                script {
+                    sh "sed 's/<GIT_SHA>/${git_sha}/g' ./DynamicInstrumentation/Dockerfile-template > ./DynamicInstrumentation/Dockerfile"
+                }
+            }
+        }
         stage ('Build Docker Container') {
             // If ever copying this code, make sure to get the quoting and escaping correct
             steps {
