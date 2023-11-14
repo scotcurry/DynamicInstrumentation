@@ -40,7 +40,7 @@ spec:
             - name: DD_APP_KEY
               value: "<DD_APP_KEY>"
             - name: DD_DYNAMIC_INSTRUMENTATION_ENABLED
-              value: "true"
+              value: true
             - name: DD_GIT_COMMIT_SHA
               value: "<GIT_SHA>"
             - name: DD_GIT_REPOSITORY_URL

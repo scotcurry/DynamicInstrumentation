@@ -38,6 +38,7 @@ pipeline {
             steps {
                 script {
                     sh "sed 's/<GIT_SHA>/${git_sha}/g' ./DynamicInstrumentation/Dockerfile-template > ./DynamicInstrumentation/Dockerfile"
+                    sh 'cat ./DynamicInstrumentation/Dockerfile'
                 }
             }
         }
