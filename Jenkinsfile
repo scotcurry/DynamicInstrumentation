@@ -6,6 +6,19 @@ pipeline {
         DATADOG_APP_KEY = credentials('DD_APP_KEY')
     }  
     stages {
+        stage ('Get Comparison Variables') {
+            steps  {
+                script {
+                    secrets_installed = sh(returnStdout: true, script:"/Users/scot.curry/google-cloud-sdk/bin/kubectl get secret | grep datadog-secret | awk '{ print \$1 }'").trim()
+                    helm_chart_intalled = sh(returnStdout: true, script:"/opt/homebrew/bin/helm list --filter datadog | grep datadog | awk '{ print \$1 }'").trim()
+                    deployment_exists = sh(returnStdout: true, script:"/Users/scot.curry/google-cloud-sdk/bin/kubectl get deployments | grep dynamicinstrumentation | awk '{ print \$1}'").trim()
+                    machine_git_sha = sh(returnStdout: true, script:"/opt/homebrew/bin/git -C /Users/scot.curry/Projects/DynamicInstrumentation rev-parse HEAD").trim()
+                    echo "secrets_installed value: ${secrets_installed}"
+                    echo "helm_chart_intalled value: ${helm_chart_intalled}"
+                    echo "deployment_exists value: ${deployment_exists}"
+                }
+            }
+        }
         stage ('Github Checkout') {
             steps {
                 script {
@@ -27,14 +40,18 @@ pipeline {
         stage ('Get Git SHA Value') {
             steps {
                 script {
-                    git_sha = sh(script: 'git rev-parse HEAD', returnStdout: true)
-                    git_sha = git_sha.trim()
+                    git_sha = sh(returnStdout: true, script: 'git rev-parse HEAD').trim()
                     echo "Git SHA: ${git_sha}"
                     echo "Current Version 2: ${env.current_version}"
                 }
             }
         }
         stage ('Update Dockerfile Template') {
+            when {
+                not {
+                    equals expected: "${git_sha}", actual: "${machine_git_sha}"
+                }
+            }
             steps {
                 script {
                     sh "sed 's/<GIT_SHA>/${git_sha}/g' ./DynamicInstrumentation/Dockerfile-template > ./DynamicInstrumentation/Dockerfile"
@@ -43,6 +60,11 @@ pipeline {
             }
         }
         stage ('Build Docker Container') {
+            when {
+                not {
+                    equals expected: "${git_sha}", actual: "${machine_git_sha}"
+                }
+            }
             // If ever copying this code, make sure to get the quoting and escaping correct
             steps {
                 script {
@@ -53,6 +75,11 @@ pipeline {
             }
         }
         stage ('Push Docker Image to Docker Hub') {
+            when {
+                not {
+                    equals expected: "${git_sha}", actual: "${machine_git_sha}"
+                    }
+            }
             steps {
                 script {
                     sh "/usr/local/bin/docker push scotcurry4/dynamicinstrumentation:${current_version}"
@@ -69,7 +96,30 @@ pipeline {
                 sh 'cat ./DynamicInstrumentation/deployment.yaml'
             }
         }
+        stage ('Install Kubernetes Secrets') {
+            when {
+                not {
+                    equals expected: "datadog-secret", actual: "${secrets_installed}"
+                }
+            }
+            steps {
+                sh "/Users/scot.curry/google-cloud-sdk/bin/kubectl create secret generic datadog-secret --from-literal api-key=${DATADOG_API_KEY} --from-literal app-key=${DATADOG_APP_KEY}"
+            }
+        }
+        stage ('Deploy Helm Charge') {
+            when { 
+                not { 
+                    equals expected: "datadog", actual: helm_chart_intalled
+                }
+            }
+            steps {
+                sh '"/opt/homebrew/bin/helm install datadog datadog/datadog -f ./helm-values.yaml'
+            }
+        }
         stage ('Deploy App to Kubernetes') {
+            when {  
+                equals expected: "dnamicinstrumentation", actual: "${deployment_exists}" 
+            }
             steps {
                 sh '/Users/scot.curry/google-cloud-sdk/bin/kubectl create -f ./DynamicInstrumentation/deployment.yaml'
             }
