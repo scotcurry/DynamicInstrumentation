@@ -1,5 +1,11 @@
 ## Overview
 
+### Keys to Success
+
+* Make sure the agent has the **remoteConfiguration** - **enabled: true** in the configuration (it is in helm-values.yaml in this repo)
+* Make sure the environment variable **DD_DYNAMIC_INSTRUMENTATION_ENABLED** is enabled is set to true (in the dynamicinstrumentation-deployment-template.yaml file in this repo)
+* Getting Source Code Linking is very helpful as it will show the code to be instrumented.  This is set in the dynamicinstrumentation-deployment-template.yaml file in this repo
+
 ### File Layout
 
 \

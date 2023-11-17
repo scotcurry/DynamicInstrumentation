@@ -121,7 +121,7 @@ pipeline {
                 equals expected: "dnamicinstrumentation", actual: "${deployment_exists}" 
             }
             steps {
-                sh '/Users/scot.curry/google-cloud-sdk/bin/kubectl create -f ./DynamicInstrumentation/deployment.yaml'
+                sh '/Users/scot.curry/google-cloud-sdk/bin/kubectl apply -f ./DynamicInstrumentation/deployment.yaml'
             }
         }
         stage ('Build / Update Datadog Service Catalog') {

@@ -10,7 +10,7 @@ namespace DynamicInstrumentation.Controllers
         public string Index()
         {
             var httpHandler = new HttpHandler();
-            var organizationInfo = httpHandler.GetJSONData();
+            var organizationInfo = httpHandler.GetServiceDefinitions();
             return organizationInfo;
         }
     }
