@@ -47,11 +47,11 @@ pipeline {
             }
         }
         stage ('Update Dockerfile Template') {
-            when {
-                not {
-                    equals expected: "${git_sha}", actual: "${machine_git_sha}"
-                }
-            }
+            // when {
+            //     not {
+            //         equals expected: "${git_sha}", actual: "${machine_git_sha}"
+            //     }
+            // }
             steps {
                 script {
                     sh "sed 's/<GIT_SHA>/${git_sha}/g' ./DynamicInstrumentation/Dockerfile-template > ./DynamicInstrumentation/Dockerfile"
@@ -60,11 +60,11 @@ pipeline {
             }
         }
         stage ('Build Docker Container') {
-            when {
-                not {
-                    equals expected: "${git_sha}", actual: "${machine_git_sha}"
-                }
-            }
+            // when {
+            //     not {
+            //         equals expected: "${git_sha}", actual: "${machine_git_sha}"
+            //     }
+            // }
             // If ever copying this code, make sure to get the quoting and escaping correct
             steps {
                 script {
@@ -75,11 +75,11 @@ pipeline {
             }
         }
         stage ('Push Docker Image to Docker Hub') {
-            when {
-                not {
-                    equals expected: "${git_sha}", actual: "${machine_git_sha}"
-                    }
-            }
+            // when {
+            //     not {
+            //         equals expected: "${git_sha}", actual: "${machine_git_sha}"
+            //         }
+            // }
             steps {
                 script {
                     sh "/usr/local/bin/docker push scotcurry4/dynamicinstrumentation:${current_version}"
@@ -117,9 +117,9 @@ pipeline {
             }
         }
         stage ('Deploy App to Kubernetes') {
-            when {  
-                equals expected: "dnamicinstrumentation", actual: "${deployment_exists}" 
-            }
+            // when {  
+            //     equals expected: "dnamicinstrumentation", actual: "${deployment_exists}" 
+            // }
             steps {
                 sh '/Users/scot.curry/google-cloud-sdk/bin/kubectl apply -f ./DynamicInstrumentation/deployment.yaml'
             }
