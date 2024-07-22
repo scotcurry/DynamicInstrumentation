@@ -3,7 +3,7 @@ kind: Service
 metadata:
   name: dynamicinstrumentation-service
 spec:
-  type: ClusterIP
+  type: Loadbalancer
   selector:
     app: dynamicinstrumentation
   ports:

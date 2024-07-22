@@ -9,19 +9,19 @@ public class HttpHandler
 
     public string GetServiceDefinitions() {
 
-        var datadogAPIKey = Environment.GetEnvironmentVariable("DD_API_KEY");
-        var datadogAPPKey = Environment.GetEnvironmentVariable("DD_APP_KEY");
+        var datadogApiKey = Environment.GetEnvironmentVariable("DD_API_KEY");
+        var datadogAppKey = Environment.GetEnvironmentVariable("DD_APP_KEY");
 
         var responseBody = string.Empty;
-        if (datadogAPIKey != null && datadogAPPKey != null) {
-            var getOrganizationURI = new UriBuilder("https", "api.datadoghq.com", 443, "api/v2/services/definitions");
+        if (datadogApiKey != null && datadogAppKey != null) {
+            var organizationUri = new UriBuilder("https", "api.datadoghq.com", 443, "api/v2/services/definitions");
             var httpClient = new HttpClient();
             httpClient.DefaultRequestHeaders.Accept.Add(new System.Net.Http.Headers.MediaTypeWithQualityHeaderValue("application/json"));
-            httpClient.DefaultRequestHeaders.Add("DD-API-KEY", datadogAPIKey);
-            httpClient.DefaultRequestHeaders.Add("DD-APPLICATION-KEY", datadogAPPKey);
+            httpClient.DefaultRequestHeaders.Add("DD-API-KEY", datadogApiKey);
+            httpClient.DefaultRequestHeaders.Add("DD-APPLICATION-KEY", datadogAppKey);
 
             
-            var response = httpClient.GetAsync(getOrganizationURI.Uri).Result;
+            var response = httpClient.GetAsync(organizationUri.Uri).Result;
             if (response.IsSuccessStatusCode) {
                 responseBody = response.Content.ReadAsStringAsync().Result; 
             }
@@ -33,11 +33,11 @@ public class HttpHandler
             responseBody = JsonConvert.SerializeObject(errorDict);
         }
 
-        responseBody = ParseServiceDefinitionJSON(responseBody);
+        responseBody = ParseServiceDefinitionJson(responseBody);
         return responseBody;
     }
 
-    static private string ParseServiceDefinitionJSON(string jsonString) {
+    private static string ParseServiceDefinitionJson(string jsonString) {
 
         var serviceDictionary = new Dictionary<string, string>();
         var jsonContent = JsonConvert.DeserializeObject<ServiceDefinitionModel>(jsonString);
@@ -59,7 +59,7 @@ public class HttpHandler
                 }
             }
         }
-        var dictionaryJSON = JsonConvert.SerializeObject(serviceDictionary);
-        return dictionaryJSON;
+        var dictionaryJson = JsonConvert.SerializeObject(serviceDictionary);
+        return dictionaryJson;
     }
 }

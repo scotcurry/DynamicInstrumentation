@@ -1,0 +1,21 @@
+name: dynamicInstrumentation Build
+on: [push]
+jobs:
+  build-dynamicInstrumenation:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Get-Source
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      
+      - name: Install .NET Core
+        uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: 7.0.x
+      
+      - name: Restore the application
+        run: dotnet restore
+  
+      - name: Dotnet Build
+        run: dotnet build --configuration Release

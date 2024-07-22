@@ -47,3 +47,18 @@ The service should always be deployed (should put this in the build pipeline).  
 ```
 minikube service dynamicinstrumentation-service --url
 ```
+
+## Publishing the App - Directly to Kubernetes.  
+
+Use the dynamic-instrumentation-deployment.yaml file and service file that are in this repo.  Make sure the container
+version is correct.
+
+## Access the Application
+```
+http://localhost:63687/DatadogOrganizations
+```
+
+If you forget it the command to launch the URL in Minikube is:
+```
+minikube service dynamicinstrumentatio-service --url
+```
