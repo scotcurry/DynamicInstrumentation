@@ -19,3 +19,24 @@ jobs:
   
       - name: Dotnet Build
         run: dotnet build --configuration Release
+        
+      - name: Login to Docker Hub
+        uses: docker/login-action@v3
+        with:
+          username: ${{ secrets.DOCKERHUB_USERNAME }}
+          password: ${{ secrets.DOCKERHUB_AUTH_TOKEN }}
+  
+      - name: Docker Build and Push
+        uses: docker/setup-buildx-action@v3
+        with:
+          context: ./DynamicInstrumentation/Dockerfile
+          platforms: linux/amd64,linux/arm64/v8
+          push: true
+          # Don't forget to set the IMAGE_NAME environment variable.
+          tags: scotcurry4/curryware-front-end:${{ github.run_number}}
+          labels: |
+            org.opencontainers.image.source=github.com/scotcurry/DynamicInstrumentation
+            org.opencontainers.image.revision=${{ github.sha }}
+            tags.datadoghq.com/env=prod
+            tags.datadoghq.com/version=${{ github.run_number }}
+            tags.datadoghq.com/service=dynamicinstrumentation
