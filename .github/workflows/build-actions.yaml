@@ -32,7 +32,7 @@ jobs:
           context: "{{defaultContext}}:DynamicInstrumentation"
           push: true
           # Don't forget to set the IMAGE_NAME environment variable.
-          tags: scotcurry4/curryware-front-end:${{ github.run_number}}
+          tags: scotcurry4/curryware-dynamicinstrumentation:${{ github.run_number}}
           labels: |
             org.opencontainers.image.source=github.com/scotcurry/DynamicInstrumentation
             org.opencontainers.image.revision=${{ github.sha }}
