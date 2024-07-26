@@ -30,7 +30,6 @@ jobs:
         uses: docker/build-push-action@v5
         with:
           context: "{{defaultContext}}:DynamicInstrumentation"
-          platforms: linux/amd64,linux/arm64/v8
           push: true
           # Don't forget to set the IMAGE_NAME environment variable.
           tags: scotcurry4/curryware-front-end:${{ github.run_number}}
