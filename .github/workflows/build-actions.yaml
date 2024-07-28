@@ -11,12 +11,6 @@ jobs:
       
       - name: Dotnet Build
         run: dotnet build --configuration Release
-        
-      - name: Set up QEMU
-        uses: docker/setup-qemu-action@v3
-        
-      - name: Setup Docker Buildx
-        uses: docker/setup-buildx-action@v3
 
       - name: Install .NET Core
         uses: actions/setup-dotnet@v4
@@ -35,14 +29,13 @@ jobs:
       - name: Docker Build and Push
         uses: docker/build-push-action@v5
         with:
-          platforms: linux/amd64,linux/arm64/v8
           context: "{{defaultContext}}:DynamicInstrumentation"
           push: true
           # Don't forget to set the IMAGE_NAME environment variable.
-          tags: scotcurry4/curryware-dynamicinstrumentation:${{ github.run_number}}
+          tags: scotcurry4/curryware-dynamic-instrumentation:${{ github.run_number}}
           labels: |
             org.opencontainers.image.source=github.com/scotcurry/DynamicInstrumentation
             org.opencontainers.image.revision=${{ github.sha }}
             tags.datadoghq.com/env=prod
             tags.datadoghq.com/version=${{ github.run_number }}
-            tags.datadoghq.com/service=dynamicinstrumentation
+            tags.datadoghq.com/service=curryware-dynamic-instrumentation
