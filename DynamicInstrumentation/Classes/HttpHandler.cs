@@ -43,7 +43,7 @@ public class HttpHandler
         var jsonContent = JsonConvert.DeserializeObject<ServiceDefinitionModel>(jsonString);
         var jsonData = jsonContent?.data;
         if (jsonData != null) {
-            for (int counter = 0; counter < jsonData.Count; counter++) {
+            for (var counter = 0; counter < jsonData.Count; counter++) {
                 if (jsonData[counter] != null) {
                     var serviceAttributes = jsonData[counter].attributes;
                     if (serviceAttributes != null) {
